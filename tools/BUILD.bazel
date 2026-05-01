@@ -1,0 +1,16 @@
+"""Maintainer-only render flow.
+
+Tekton ships a single `release.yaml` per release (no helm chart),
+so the maintainer flow is a shell script that curls + sha-verifies
++ copies into `private/manifests/tekton.yaml`. Run via:
+
+    bash tools/render_tekton.sh <version>
+
+This BUILD.bazel intentionally has no targets — there's no helm
+template to render, no toolchain to expose. The render is bazel-free.
+"""
+
+exports_files([
+    "render_tekton.sh",
+    "versions.bzl",
+])

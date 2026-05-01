@@ -1,0 +1,42 @@
+# Smoke fixture for rules_tekton.
+#
+# A minimal Task + TaskRun pair. The Task has a single step that runs
+# `echo` in busybox (small image, <2 MB, fast pull). The TaskRun is
+# the workload — Tekton's controller reconciles it into a Pod, the Pod
+# runs the step, and Tekton updates the TaskRun's `Succeeded` condition
+# to `True` on success.
+#
+# Proves end-to-end: controller reconciler + webhook (validates the
+# TaskRun on admission) + Pod creation + Pod completion + status
+# update + condition propagation. The smoke test polls the TaskRun's
+# `Succeeded` condition.
+#
+# `apiVersion: tekton.dev/v1` is the GA API; v1beta1 is still served
+# but Tekton 1.x prefers v1 in docs and tutorials.
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tekton-smoke
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: hello
+  namespace: tekton-smoke
+spec:
+  steps:
+    - name: hello
+      image: busybox:1.36
+      command: ["sh", "-c"]
+      args: ["echo 'hello from rules_tekton smoke'"]
+---
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: hello-run
+  namespace: tekton-smoke
+spec:
+  taskRef:
+    name: hello
+    kind: Task
