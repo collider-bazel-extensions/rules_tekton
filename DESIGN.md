@@ -88,3 +88,7 @@ v0.1 takes hard dependency on rules_kubectl ≥ 0.2.0 via
 
 The pattern this obsoletes (rules_keda's three-target split) is
 documented in rules_kubectl's release notes.
+
+## Release archive contents (v0.1.1)
+
+`tests/` is `export-ignore` (`.gitattributes`): its packages load dev-only modules, which made `@rules_tekton//...` unloadable for consumers. GitHub's tag tarballs honour it; a `git_override` clone still contains it. `REPO.bazel` `ignore_directories` isn't used because it would also hide it from this repo's own `bazel test`. CI's `consumer` job (`.github/consumer/check.sh`) queries `//...` from the commit's `git archive`. Same fix as rules_kubectl#5 / rules_atlas#12.
