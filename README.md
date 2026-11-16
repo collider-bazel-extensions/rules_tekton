@@ -211,3 +211,11 @@ PRs welcome. Conventions match the sibling rule sets:
 - Wait on the resolver Deployment in `tekton-pipelines-resolvers`
   (blocked on rules_kubectl growing namespace-qualified wait
   syntax — already noted as a v0.3 candidate there)
+
+---
+
+## Requesting a new rules package
+
+Want Bazel rules for another tool or service?
+[Request a rules package](https://github.com/collider-bazel-extensions/.github/issues/new?template=request-a-rules-package.yml).
+The [organization page](https://github.com/collider-bazel-extensions) lists every package.
